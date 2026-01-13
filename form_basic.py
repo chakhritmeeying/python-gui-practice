@@ -7,11 +7,15 @@ root.geometry("400x300")
 
 
 def submit_info():
+    if not check_show_info.get():
+        messagebox.showwarning(
+            "Warning", "Please check 'Show Information' to display info.")
+        return
     name = name_entry.get()
     age = age_entry.get()
     if not is_valid_input(name, age):
         return
-    info_text.set(f"Your Information\nName: {name} | Age: {age}")
+    update_display(name, age)
     clear_confirm = messagebox.askyesno(
         "Confirmation", "Do you want to clear the fields?")
     if clear_confirm:
@@ -46,6 +50,14 @@ def reset_form():
     name_entry.focus()
 
 
+def update_display(name, age):
+    selected = radio_var.get()
+    if selected == "simple":
+        info_text.set(f"Your Information\nName: {name} | Age: {age}")
+    else:
+        info_text.set(f"Your Information\nName: {name} \n Age: {age}")
+
+
 tk.Label(
     root,
     text="Enter your information"
@@ -78,18 +90,43 @@ age_entry.grid(row=1, column=1)
 
 
 # Create a frame for buttons
+check_show_info = tk.BooleanVar()
+tk.Checkbutton(
+    root,
+    text="Show Information",
+    variable=check_show_info
+).pack()
+
 button_frame = tk.Frame(root)
 button_frame.pack()
+
+# Radio buttons for display options
+radio_var = tk.StringVar(root, "simple")
+tk.Radiobutton(
+    button_frame,
+    text="Simple",
+    variable=radio_var,
+    value="simple"
+).grid(row=0, column=0)
+tk.Radiobutton(
+    button_frame,
+    text="Detail",
+    variable=radio_var,
+    value="detail"
+).grid(row=0, column=1)
+
+
+# Buttons
 tk.Button(
     button_frame,
     text="Submit",
     command=submit_info
-).pack(side="left")
+).grid(row=1, column=0)
 tk.Button(
     button_frame,
     text="Clear",
     command=clear_fields
-).pack(side="left", padx=10)
+).grid(row=1, column=1)
 
 
 # Show info
