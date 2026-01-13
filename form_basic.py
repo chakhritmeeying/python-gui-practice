@@ -15,9 +15,7 @@ def submit_info():
     clear_confirm = messagebox.askyesno(
         "Confirmation", "Do you want to clear the fields?")
     if clear_confirm:
-        name_entry.delete(0, tk.END)
-        age_entry.delete(0, tk.END)
-        name_entry.focus()
+        reset_form()
 
 
 def is_valid_input(name, age):
@@ -37,11 +35,15 @@ def clear_fields():
     clear_confirm = messagebox.askyesno(
         "Confirmation", "Do you want to clear the fields?")
     if clear_confirm:
-        name_entry.delete(0, tk.END)
-        age_entry.delete(0, tk.END)
-        name_entry.focus()
+        reset_form()
         info_text.set("")
         messagebox.showinfo("Cleared", "Fields have been cleared.")
+
+
+def reset_form():
+    name_entry.delete(0, tk.END)
+    age_entry.delete(0, tk.END)
+    name_entry.focus()
 
 
 tk.Label(
