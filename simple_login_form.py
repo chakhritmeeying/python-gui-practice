@@ -12,7 +12,7 @@ class LoginForm:
         # self.userid = "user"
         # self.userpassword = "password"
 
-        self.userid = [
+        self.users = [
             {
                 "username": "user",
                 "password": "password"
@@ -84,7 +84,7 @@ class LoginForm:
             messagebox.showwarning(
                 "Login failed", "Please enter username and password")
             return
-        userid = self.userid
+        userid = self.users
         for idx, info in enumerate(userid, start=1):
             if entry_username == info["username"]:
                 if entry_password == info["password"]:
