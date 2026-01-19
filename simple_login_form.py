@@ -9,8 +9,6 @@ class LoginForm:
         self.root.geometry("400x300")
 
         self.create_widgets()
-        # self.userid = "user"
-        # self.userpassword = "password"
 
         self.users = [
             {
@@ -84,12 +82,11 @@ class LoginForm:
             messagebox.showwarning(
                 "Login failed", "Please enter username and password")
             return
-        userid = self.users
-        for idx, info in enumerate(userid, start=1):
+        for info in self.users:
             if entry_username == info["username"]:
                 if entry_password == info["password"]:
                     messagebox.showinfo("Login success", "Login success")
-                    self.login_success.set(f"Welcom {info['username']}")
+                    self.login_success.set(f"Welcome {info['username']}")
                     return
                 else:
                     messagebox.showwarning(
@@ -99,7 +96,105 @@ class LoginForm:
             "Login failed", "User not found\nPlease try again.")
 
     def register_page(self):
-        messagebox.showinfo("Information", "This function will be soon.")
+        self.open_register_window()
+    # Register Form
+
+    def open_register_window(self):
+        register_window = tk.Toplevel(self.root)
+        register_window.title("Register")
+        register_window.geometry("400x300")
+
+        tk.Label(
+            register_window,
+            text="Register new user",
+            font=("Arial", 14, "bold")
+        ).pack(pady=10)
+        frame_info = tk.Frame(register_window)
+        frame_info.pack(pady=10)
+        tk.Label(
+            frame_info,
+            text="username: "
+        ).grid()
+        entry_register_user = tk.Entry(
+            frame_info,
+            width=20
+        )
+        entry_register_user.grid(row=0, column=1, padx=5)
+        tk.Label(
+            frame_info,
+            text="password: "
+        ).grid(row=1, column=0)
+        entry_register_password = tk.Entry(
+            frame_info,
+            show="*",
+            width=20
+        )
+        entry_register_password.grid(row=1, column=1, padx=5)
+        tk.Label(
+            frame_info,
+            text="confirm-password: "
+        ).grid(row=2, column=0)
+        entry_confirm_password = tk.Entry(
+            frame_info,
+            show="*",
+            width=20
+        )
+        entry_confirm_password.grid(
+            row=2, column=1, padx=5)
+        frame_register_button = tk.Frame(register_window)
+        frame_register_button.pack(pady=10)
+        tk.Button(
+            frame_register_button,
+            text="Submit",
+            command=lambda: self.register_new_user(
+                entry_register_user,
+                entry_register_password,
+                entry_confirm_password,
+                register_window
+            )
+        ).pack(side="left")
+        tk.Button(
+            frame_register_button,
+            text="Close",
+            command=register_window.destroy
+        ).pack(side="left", padx=5)
+
+    def register_new_user(self, entry_user, entry_pass, entry_confirm, window):
+        username = entry_user.get()
+        password = entry_pass.get()
+        confirm_password = entry_confirm.get()
+        if not username or not password or not confirm_password:
+            messagebox.showwarning(
+                "Error",
+                "Please enter username password and confirm password."
+            )
+            entry_user.focus()
+            return
+        if self.check_user(username):
+            messagebox.showwarning(
+                "Error",
+                "Username has used please try another username"
+            )
+            entry_user.focus()
+            return
+        if password != confirm_password:
+            messagebox.showinfo(
+                "Error",
+                "Password not match"
+            )
+            return
+        self.users.append({
+            "username": username,
+            "password": password
+        })
+        messagebox.showinfo("Success", "Register success.")
+        window.destroy()
+
+    def check_user(self, username):
+        for user in self.users:
+            if username == user['username']:
+                return True
+        return False
 
 
 if __name__ == "__main__":
