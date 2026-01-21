@@ -96,20 +96,25 @@ class LoginForm:
             "Login failed", "User not found\nPlease try again.")
 
     def register_page(self):
-        self.open_register_window()
-    # Register Form
+        RegisterForm(self.root, self.users)
 
-    def open_register_window(self):
-        register_window = tk.Toplevel(self.root)
-        register_window.title("Register")
-        register_window.geometry("400x300")
+
+class RegisterForm:
+
+    def __init__(self, parent, users):
+        self.parent = parent
+        self.users = users
+
+        self.register_window = tk.Toplevel(parent)
+        self.register_window.title("Register")
+        self.register_window.geometry("400x300")
 
         tk.Label(
-            register_window,
+            self.register_window,
             text="Register new user",
             font=("Arial", 14, "bold")
         ).pack(pady=10)
-        frame_info = tk.Frame(register_window)
+        frame_info = tk.Frame(self.register_window)
         frame_info.pack(pady=10)
         tk.Label(
             frame_info,
@@ -141,7 +146,7 @@ class LoginForm:
         )
         entry_confirm_password.grid(
             row=2, column=1, padx=5)
-        frame_register_button = tk.Frame(register_window)
+        frame_register_button = tk.Frame(self.register_window)
         frame_register_button.pack(pady=10)
         tk.Button(
             frame_register_button,
@@ -150,13 +155,13 @@ class LoginForm:
                 entry_register_user,
                 entry_register_password,
                 entry_confirm_password,
-                register_window
+                self.register_window
             )
         ).pack(side="left")
         tk.Button(
             frame_register_button,
             text="Close",
-            command=register_window.destroy
+            command=self.register_window.destroy
         ).pack(side="left", padx=5)
 
     def register_new_user(self, entry_user, entry_pass, entry_confirm, window):
